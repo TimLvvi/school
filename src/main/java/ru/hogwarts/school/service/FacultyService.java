@@ -1,8 +1,11 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.hogwarts.school.model.Faculty;
 
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 
@@ -25,12 +28,22 @@ public class FacultyService {
     }
 
     public Faculty findFaculty(long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Факультет с id " + id + " не найден"
+        ));
     }
 
-    public Faculty editFaculty(Faculty faculty) {
-        return facultyRepository.save(faculty);
-    }
+    public void editFaculty(Faculty faculty) {
+        Faculty oldFaculty = facultyRepository.findById(faculty.getId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Факультет с id " + faculty.getId() + " не найден"
+                ));
+        oldFaculty.setName(faculty.getName());
+        oldFaculty.setColor(faculty.getColor());
+        facultyRepository.save(oldFaculty);}
 
     public void deleteFaculty(long id) {
         facultyRepository.deleteById(id);
@@ -41,8 +54,6 @@ public class FacultyService {
     }
 
     public Collection<Faculty> getListFacultiesIncomingColor(String color) {
-        return facultyRepository.findAll().stream()
-                .filter(faculty ->faculty.getColor().equals(color))
-                .toList();
+        return facultyRepository.findByColor(color);
     }
 }
