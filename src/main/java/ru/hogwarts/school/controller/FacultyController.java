@@ -47,8 +47,8 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.getAllFaculties());
     }
 
-//    @GetMapping("{color}")
-//    public Collection<Faculty> getListStudentsIncomingAge(@PathVariable String color) {
-//        return facultyService.getListFacultiesIncomingColor(color);
-//    }
+    @GetMapping("/color")
+    public Collection<Faculty> getListStudentsIncomingAge(@RequestParam String color) {
+        return facultyService.getListFacultiesIncomingColor(color);
+    }
 }

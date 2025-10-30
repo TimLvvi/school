@@ -44,9 +44,9 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-//    @GetMapping("{age}")
-//    public Collection<Student> getListStudentsIncomingAge(@PathVariable int age) {
-//        return studentService.getListStudentsIncomingAge(age);
-//    }
+    @GetMapping("/age")
+    public Collection<Student> getListStudentsIncomingAge(@RequestParam int age) {
+        return studentService.getListStudentsIncomingAge(age);
+    }
 
 }
