@@ -7,7 +7,7 @@ import ru.hogwarts.school.model.Faculty;
 
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
-
+import ru.hogwarts.school.repository.StudentRepository;
 
 
 import java.util.Collection;
@@ -16,9 +16,11 @@ import java.util.Collection;
 @Service
 public class FacultyService {
     private final FacultyRepository facultyRepository;
+    private final StudentRepository studentRepository;
 
-    public FacultyService(FacultyRepository facultyRepository) {
+    public FacultyService(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
+        this.studentRepository = studentRepository;
     }
 
     public Faculty createFaculty(Faculty faculty) {
@@ -53,7 +55,15 @@ public class FacultyService {
         return facultyRepository.findAll();
     }
 
-    public Collection<Faculty> getListFacultiesIncomingColor(String color) {
-        return facultyRepository.findByColor(color);
+    public Collection<Faculty> findByNameIgnoreCase(String name) {
+        return facultyRepository.findByNameIgnoreCase(name);
+    }
+
+    public Collection<Faculty> findByColorIgnoreCase(String color) {
+        return facultyRepository.findByColorIgnoreCase(color);
+    }
+
+     public Collection <Student> findByFaculty_Id(long id) {
+        return studentRepository.findByFaculty_Id(id);
     }
 }

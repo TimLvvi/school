@@ -3,6 +3,7 @@ package ru.hogwarts.school.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
@@ -49,7 +50,16 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Collection<Student> getListStudentsIncomingAge(int age) {
+    public Collection<Student> findByAge(int age) {
         return studentRepository.findByAge(age);
     }
+
+    public Collection<Student> findByAgeBetween(int minAge, int maxAge) {
+        return studentRepository.findByAgeBetween(minAge,maxAge);
+    }
+
+    public Faculty findFacultyByStudent_id(long id) {
+        return findStudent(id).getFaculty();
+    }
+
 }
