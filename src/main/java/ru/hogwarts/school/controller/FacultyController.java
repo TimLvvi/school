@@ -3,6 +3,7 @@ package ru.hogwarts.school.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
@@ -34,7 +35,7 @@ public class FacultyController {
     @PutMapping
     public void editFaculty(@RequestBody Faculty faculty) {
         facultyService.editFaculty(faculty);
-        }
+    }
 
     @DeleteMapping("{id}")
     public ResponseEntity deleteStudent(@PathVariable long id) {
@@ -47,8 +48,21 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.getAllFaculties());
     }
 
-    @GetMapping("/color")
-    public Collection<Faculty> getListStudentsIncomingAge(@RequestParam String color) {
-        return facultyService.getListFacultiesIncomingColor(color);
+    @GetMapping("/color or name")
+    public Collection<Faculty> findByNameOrColorIgnoreCase(@RequestParam(required = false) String name,
+                                                           @RequestParam(required = false) String color) {
+        if (name != null && !name.isBlank()) {
+            return facultyService.findByNameIgnoreCase(name);
+        }
+        if (color != null && !color.isBlank()) {
+            return facultyService.findByColorIgnoreCase(color);
+        }
+        return null;
     }
+
+    @GetMapping("/students/{id}")
+    public Collection<Student> findByFaculty_Id(@PathVariable long id) {
+        return facultyService.findByFaculty_Id(id);
+    }
+
 }
