@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -41,7 +42,7 @@ public class StudentController {
     @GetMapping("{id}")
     public Student findStudent(@PathVariable long id) {
         return studentService.findStudent(id);
-        }
+    }
 
     @PutMapping
     public void editStudent(@RequestBody Student student) {
@@ -50,21 +51,23 @@ public class StudentController {
 
     @DeleteMapping("{id}")
     public ResponseEntity deleteStudent(@PathVariable long id) {
-         studentService.deleteStudent(id);
-         return ResponseEntity.ok().build();
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
     public ResponseEntity<Collection<Student>> getAllStudent() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
+
     @GetMapping("/age")
     public Collection<Student> findByAge(@RequestParam int age) {
-        return studentService.findByAge(age);}
+        return studentService.findByAge(age);
+    }
 
     @GetMapping("/minAge,minAge")
-    public Collection<Student> findByAgeBetween(@RequestParam int minAge,@RequestParam int maxAge) {
-        return studentService.findByAgeBetween(minAge,maxAge);
+    public Collection<Student> findByAgeBetween(@RequestParam int minAge, @RequestParam int maxAge) {
+        return studentService.findByAgeBetween(minAge, maxAge);
 
     }
 
@@ -78,9 +81,8 @@ public class StudentController {
         if (avatar.getSize() > 1024 * 300) {
             return ResponseEntity.badRequest().body("Слишком большой файл");
         }
-            avatarServise.uploadAvatar(id, avatar);
-            return ResponseEntity.ok().build();
-
+        avatarServise.uploadAvatar(id, avatar);
+        return ResponseEntity.ok().build();
 
 
     }
@@ -100,7 +102,7 @@ public class StudentController {
 
 
     @GetMapping("/{id}/avatar")
-    public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException{
+    public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
         Avatar avatar = avatarServise.findStudentAvatar(id);
 
         Path path = Path.of(avatar.getFilePath());
@@ -108,15 +110,27 @@ public class StudentController {
         try (
                 InputStream is = Files.newInputStream(path);
                 OutputStream os = response.getOutputStream();
-                )
-        {
+        ) {
             response.setContentType(avatar.getMediaType());
-            response.setContentLength((int)avatar.getFileSize());
+            response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
-
         }
+    }
+
+    @GetMapping("/number_of_all_students")
+    public Integer numberAllStudents() {
+        return studentService.numberAllStudents();
 
     }
 
+    @GetMapping("/average_age_of_students")
+    public Integer averageAgeStudents() {
+        return studentService.averageAgeStudents();
+    }
 
+
+    @GetMapping("/last_five_students")
+    public List<Student> lastFiveStudents() {
+        return studentService.lastFiveStudents();
+    }
 }
