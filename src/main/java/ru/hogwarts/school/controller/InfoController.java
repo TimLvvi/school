@@ -12,7 +12,7 @@ public class InfoController {
     private int servetPort;
 
     @GetMapping("/port")
-    public int GetPort() {
+    public int getPort() {
         return servetPort;
     }
 }

@@ -133,4 +133,19 @@ public class StudentController {
     public List<Student> lastFiveStudents() {
         return studentService.lastFiveStudents();
     }
+
+    @GetMapping("/name start A")
+    public List<String> nameStartA() {
+        return studentService.nameStartA();
+    }
+
+    @GetMapping("/average age students stream")
+    public Double averageAgeStudentsStream() {
+        return studentService.averageAgeStudentsStream();
+    }
+
+    @GetMapping("/get value formula")
+    public Long getValueFormula() {
+        return studentService.getValueFormula();
+    }
 }
