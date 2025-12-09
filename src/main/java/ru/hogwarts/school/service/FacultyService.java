@@ -11,6 +11,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 
 import java.util.Collection;
+import java.util.Comparator;
 
 
 @Service
@@ -32,9 +33,9 @@ public class FacultyService {
     public Faculty findFaculty(long id) {
         return facultyRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "Факультет с id " + id + " не найден"
-        ));
+                        HttpStatus.NOT_FOUND,
+                        "Факультет с id " + id + " не найден"
+                ));
     }
 
     public void editFaculty(Faculty faculty) {
@@ -45,7 +46,8 @@ public class FacultyService {
                 ));
         oldFaculty.setName(faculty.getName());
         oldFaculty.setColor(faculty.getColor());
-        facultyRepository.save(oldFaculty);}
+        facultyRepository.save(oldFaculty);
+    }
 
     public void deleteFaculty(long id) {
         facultyRepository.deleteById(id);
@@ -63,7 +65,14 @@ public class FacultyService {
         return facultyRepository.findByColorIgnoreCase(color);
     }
 
-     public Collection <Student> findByFaculty_Id(long id) {
+    public Collection<Student> findByFaculty_Id(long id) {
         return studentRepository.findByFaculty_Id(id);
+    }
+
+    public String maxLenghtNameFaculty() {
+        return facultyRepository.findAll().stream()
+                .map(s -> s.getName())
+                .max(Comparator.comparing(s -> s.length()))
+                .orElse("");
     }
 }

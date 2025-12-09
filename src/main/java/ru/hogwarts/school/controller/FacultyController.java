@@ -48,7 +48,7 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.getAllFaculties());
     }
 
-    @GetMapping("/color or name")
+    @GetMapping("/color_or_name")
     public Collection<Faculty> findByNameOrColorIgnoreCase(@RequestParam(required = false) String name,
                                                            @RequestParam(required = false) String color) {
         if (name != null && !name.isBlank()) {
@@ -63,6 +63,11 @@ public class FacultyController {
     @GetMapping("/students/{id}")
     public Collection<Student> findByFaculty_Id(@PathVariable long id) {
         return facultyService.findByFaculty_Id(id);
+    }
+
+    @GetMapping("/max_lenght_name_faculty")
+    public String maxLenghtNameFaculty() {
+        return facultyService.maxLenghtNameFaculty();
     }
 
 }
