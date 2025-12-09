@@ -134,18 +134,18 @@ public class StudentController {
         return studentService.lastFiveStudents();
     }
 
-    @GetMapping("/name start A")
+    @GetMapping("/name_start_A")
     public List<String> nameStartA() {
         return studentService.nameStartA();
     }
 
-    @GetMapping("/average age students stream")
-    public Double averageAgeStudentsStream() {
+    @GetMapping("/average_age_students_stream")
+    public double averageAgeStudentsStream() {
         return studentService.averageAgeStudentsStream();
     }
 
-    @GetMapping("/get value formula")
-    public Long getValueFormula() {
+    @GetMapping("/get_value_formula")
+    public long getValueFormula() {
         return studentService.getValueFormula();
     }
 }

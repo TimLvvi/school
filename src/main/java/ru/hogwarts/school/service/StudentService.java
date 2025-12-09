@@ -99,13 +99,13 @@ public class StudentService {
     }
     public List<String> nameStartA() {
         return studentRepository.findAll().stream()
-                .map(s->s.getName())
-                .filter(s->s.toUpperCase().startsWith("А"))
+                .map(s->s.getName().toUpperCase())
+                .filter(s->s.startsWith("А"))
                 .sorted()
                 .toList();
     }
 
-    public Double averageAgeStudentsStream() {
+    public double averageAgeStudentsStream() {
         return studentRepository.findAll().stream()
                 .mapToInt(s -> s.getAge())
                 .average()
@@ -113,7 +113,7 @@ public class StudentService {
 
     }
 
-    public Long getValueFormula() {
+    public long getValueFormula() {
         return LongStream.rangeClosed(1, 1000000)
                 .parallel()
                 .sum();
