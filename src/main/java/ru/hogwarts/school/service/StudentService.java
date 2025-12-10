@@ -37,11 +37,11 @@ public class StudentService {
         logger.info("Was invoked method for find student");
         return studentRepository.findById(id)
                 .orElseThrow(() -> {
-                        logger.error("There is not student with id = " + id);
-                        return new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Студент с id " + id + " не найден"
-                );
+                    logger.error("There is not student with id = " + id);
+                    return new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,
+                            "Студент с id " + id + " не найден"
+                    );
                 });
     }
 
@@ -74,7 +74,7 @@ public class StudentService {
 
     public Collection<Student> findByAgeBetween(int minAge, int maxAge) {
         logger.info("Was invoked method for find by age between");
-        return studentRepository.findByAgeBetween(minAge,maxAge);
+        return studentRepository.findByAgeBetween(minAge, maxAge);
     }
 
     public Faculty findFacultyByStudent_id(long id) {
@@ -83,10 +83,12 @@ public class StudentService {
     }
 
 
-    public Integer numberAllStudents(){
+    public Integer numberAllStudents() {
         logger.info("Was invoked method for number all students");
         return studentRepository.numberAllStudents();
-    };
+    }
+
+    ;
 
     public Integer averageAgeStudents() {
         logger.info("Was invoked method for average age students");
@@ -97,10 +99,11 @@ public class StudentService {
         logger.info("Was invoked method for last five students");
         return studentRepository.lastFiveStudents();
     }
+
     public List<String> nameStartA() {
         return studentRepository.findAll().stream()
-                .map(s->s.getName().toUpperCase())
-                .filter(s->s.startsWith("А"))
+                .map(s -> s.getName().toUpperCase())
+                .filter(s -> s.startsWith("А"))
                 .sorted()
                 .toList();
     }
@@ -117,5 +120,58 @@ public class StudentService {
         return LongStream.rangeClosed(1, 1000000)
                 .parallel()
                 .sum();
+    }
+
+    public void printStudentsParallel() {
+        List<Student> allStudents = studentRepository.findAll();
+
+        System.out.println("первый студент: " + allStudents.get(0).getName());
+        System.out.println("второй студент: " + allStudents.get(1).getName());
+
+
+        new Thread(() -> {
+            System.out.println("третий студент: " + allStudents.get(2).getName());
+            System.out.println("четвертый студент: " + allStudents.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println("пятый студент: " + allStudents.get(4).getName());
+            System.out.println("шестой студент: " + allStudents.get(5).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println("седьмой студент: " + allStudents.get(6).getName());
+            System.out.println("восьмой студент: " + allStudents.get(7).getName());
+        }).start();
+    }
+
+    public void printStudentsSynchronized() {
+        List<Student> allStudents = studentRepository.findAll();
+
+        System.out.println("первый студент: " + allStudents.get(0).getName());
+        System.out.println("второй студент: " + allStudents.get(1).getName());
+
+        Object flag = new Object();
+
+        new Thread(() -> {
+            synchronized (flag) {
+                System.out.println("третий студент: " + allStudents.get(2).getName());
+                System.out.println("четвертый студент: " + allStudents.get(3).getName());
+            }
+        }).start();
+
+        new Thread(() -> {
+            synchronized (flag) {
+                System.out.println("пятый студент: " + allStudents.get(4).getName());
+                System.out.println("шестой студент: " + allStudents.get(5).getName());
+            }
+        }).start();
+
+        new Thread(() -> {
+            synchronized (flag) {
+                System.out.println("седьмой студент: " + allStudents.get(6).getName());
+                System.out.println("восьмой студент: " + allStudents.get(7).getName());
+            }
+        }).start();
     }
 }
