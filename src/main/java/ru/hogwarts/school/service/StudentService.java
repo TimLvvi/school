@@ -145,33 +145,29 @@ public class StudentService {
         }).start();
     }
 
+    private synchronized void printStudentName(String studentInfo) {
+        System.out.println(studentInfo);
+    }
+
     public void printStudentsSynchronized() {
         List<Student> allStudents = studentRepository.findAll();
 
-        System.out.println("первый студент: " + allStudents.get(0).getName());
-        System.out.println("второй студент: " + allStudents.get(1).getName());
-
-        Object flag = new Object();
+        printStudentName("первый студент: " + allStudents.get(0).getName());
+        printStudentName("второй студент: " + allStudents.get(1).getName());
 
         new Thread(() -> {
-            synchronized (flag) {
-                System.out.println("третий студент: " + allStudents.get(2).getName());
-                System.out.println("четвертый студент: " + allStudents.get(3).getName());
-            }
+            printStudentName("третий студент: " + allStudents.get(2).getName());
+            printStudentName("четвертый студент: " + allStudents.get(3).getName());
         }).start();
 
         new Thread(() -> {
-            synchronized (flag) {
-                System.out.println("пятый студент: " + allStudents.get(4).getName());
-                System.out.println("шестой студент: " + allStudents.get(5).getName());
-            }
+            printStudentName("пятый студент: " + allStudents.get(4).getName());
+            printStudentName("шестой студент: " + allStudents.get(5).getName());
         }).start();
 
         new Thread(() -> {
-            synchronized (flag) {
-                System.out.println("седьмой студент: " + allStudents.get(6).getName());
-                System.out.println("восьмой студент: " + allStudents.get(7).getName());
-            }
+            printStudentName("седьмой студент: " + allStudents.get(6).getName());
+            printStudentName("восьмой студент: " + allStudents.get(7).getName());
         }).start();
     }
 }
